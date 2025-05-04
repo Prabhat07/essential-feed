@@ -38,13 +38,11 @@ class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         
-        var capturedErrors =  [RemoteFeedLoader.Error]()
-        sut.load { capturedErrors.append($0) }
+        expect(sut, completeWithError: .connectivity) {
+            let clientError = NSError(domain: "Test", code: 0)
+            client.complete(with: clientError)
+        }
         
-        let clientError = NSError(domain: "Test", code: 0)
-        client.complete(with: clientError)
-        
-        XCTAssertEqual(capturedErrors, [.connectivity])
     }
     
     func test_load_deliversErrorOnNon200HTTPResponse() {
@@ -53,10 +51,9 @@ class RemoteFeedLoaderTests: XCTestCase {
         let samples = [199, 201, 300, 400, 500]
             
         samples.enumerated().forEach { index, code in
-            var capturedErrors = [RemoteFeedLoader.Error]()
-            sut.load { capturedErrors.append($0) }
-            client.complete(withStatusCode: code, at: index)
-            XCTAssertEqual(capturedErrors, [.invalidData])
+            expect(sut, completeWithError: .invalidData) {
+                client.complete(withStatusCode: code, at: index)
+            }
         }
         
     }
@@ -64,16 +61,22 @@ class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversErrorOnInvalidJson() {
         let (sut, client) = makeSUT()
         
-        var capturedErrors = [RemoteFeedLoader.Error]()
-        sut.load { capturedErrors.append($0) }
-        
-        let invalidJson = Data("Invlaid JSON".utf8)
-        client.complete(withStatusCode: 200, data: invalidJson)
-        XCTAssertEqual(capturedErrors, [.invalidData])
+        expect(sut, completeWithError: .invalidData) {
+            let invalidJson = Data("Invlaid JSON".utf8)
+            client.complete(withStatusCode: 200, data: invalidJson)
+        }
         
     }
     
     //MARK: - Helpers
+    private func expect(_ sut: RemoteFeedLoader, completeWithError error: RemoteFeedLoader.Error, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+        var capturedErrors = [RemoteFeedLoader.Error]()
+        sut.load { capturedErrors.append($0) }
+        action()
+        
+        XCTAssertEqual(capturedErrors, [error], file: file, line: line)
+        
+    }
     
     private func makeSUT(url: URL = URL(string: "https://a-url.com")!) -> (RemoteFeedLoader, HTTPClientSpy) {
         let client = HTTPClientSpy()
