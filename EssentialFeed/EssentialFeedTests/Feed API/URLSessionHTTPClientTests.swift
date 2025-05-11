@@ -90,7 +90,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
         return sut
     }
     
-    private func resultErrorFor(data: Data?, response: HTTPURLResponse?, error: Error?, file: StaticString = #file, line: UInt = #line) -> Error? {
+    private func resultErrorFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #file, line: UInt = #line) -> Error? {
         URLProtocolStub.stub(data: data, response: response, error: error as NSError?)
         
         let sut = makeSUT(file: file, line: line)
@@ -119,11 +119,11 @@ final class URLSessionHTTPClientTests: XCTestCase {
         private static var requestObserver: ((URLRequest) -> Void)?
         private struct Stub {
             let data: Data?
-            let response: HTTPURLResponse?
+            let response: URLResponse?
             let error: NSError?
         }
         
-        static func stub(data: Data?, response: HTTPURLResponse?, error: NSError?) {
+        static func stub(data: Data?, response: URLResponse?, error: NSError?) {
             stub = Stub(data: data, response: response, error: error)
         }
         
