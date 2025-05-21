@@ -123,8 +123,8 @@
 		080EDEFE21B6DA7E00813479 /* EssentialFeedTests */ = {
 			isa = PBXGroup;
 			children = (
-				4336DE262DDE2C43006FA07D /* Feed Cache */,
 				43AE88582DCB089900090B14 /* Feed API */,
+				4336DE262DDE2C43006FA07D /* Feed Cache */,
 				080EDF0121B6DA7E00813479 /* Info.plist */,
 			);
 			path = EssentialFeedTests;
