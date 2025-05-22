@@ -31,7 +31,6 @@ class FeedStore {
     typealias DeletionCompletion = (Error?) -> Void
     
     var deleteCachedFeedCallCount = 0
-    var insertionCallCount = 0
     var insertions  = [(items: [FeedItem], timeStamp: Date)]()
     
     private var deletionCompletions = [DeletionCompletion]()
@@ -42,7 +41,6 @@ class FeedStore {
     }
     
     func insert(_ items: [FeedItem], timeStamp: Date) {
-        insertionCallCount += 1
         insertions.append((items, timeStamp))
     }
     
@@ -82,17 +80,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         sut.save(items)
         store.completeDeletion(with: deletionError)
         
-        XCTAssertEqual(store.insertionCallCount, 0)
-    }
-    
-    func test_save_requestsNewCacheInsertionOnSuccessfulDeletion() {
-        let (sut, store) = makeSUT()
-        let items = [uniqueItem(), uniqueItem()]
-        
-        sut.save(items)
-        store.completeDeletSuccessfully()
-        
-        XCTAssertEqual(store.insertionCallCount, 1)
+        XCTAssertEqual(store.insertions.count, 0)
     }
     
     func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
@@ -103,7 +91,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         sut.save(items)
         store.completeDeletSuccessfully()
         
-        XCTAssertEqual(store.insertionCallCount, 1)
+        XCTAssertEqual(store.insertions.count, 1)
         XCTAssertEqual(store.insertions.first?.items, items)
         XCTAssertEqual(store.insertions.first?.timeStamp, timeStamp)
     }
