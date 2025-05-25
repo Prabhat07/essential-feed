@@ -41,11 +41,13 @@ final class CacheFeedUseCaseTests: XCTestCase {
         let timeStamp = Date()
         let (sut, store) = makeSUT { timeStamp }
         let items = [uniqueItem(), uniqueItem()]
-        
+        let localItems = items.map {
+            LocalFeedItem(id: $0.id, description: $0.description, location: $0.location, imageURL: $0.imageURL)
+        }
         sut.save(items) { _ in }
         store.completeDeletSuccessfully()
         
-        XCTAssertEqual(store.receivedMessage, [.deleteCachedFeed, .insert(feed: items, timeStamp: timeStamp)])
+        XCTAssertEqual(store.receivedMessage, [.deleteCachedFeed, .insert(feed: localItems, timeStamp: timeStamp)])
     }
     
     func test_save_failsOnDeletionError() {
@@ -141,7 +143,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         
         enum ReceivedMessage: Equatable {
             case deleteCachedFeed
-            case insert(feed: [FeedItem], timeStamp: Date)
+            case insert(feed: [LocalFeedItem], timeStamp: Date)
         }
         
         var receivedMessage = [ReceivedMessage]()
@@ -151,7 +153,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
             receivedMessage.append(.deleteCachedFeed)
         }
         
-        func insert(_ items: [FeedItem], timeStamp: Date, completion: @escaping InsertionCompletion) {
+        func insert(_ items: [LocalFeedItem], timeStamp: Date, completion: @escaping InsertionCompletion) {
             insertionCompletions.append(completion)
             receivedMessage.append(.insert(feed: items, timeStamp: timeStamp))
         }
