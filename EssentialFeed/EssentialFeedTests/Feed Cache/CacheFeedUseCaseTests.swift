@@ -19,7 +19,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
     func test_save_requestsCacheDeletion() {
         let (sut, store) = makeSUT()
                 
-        sut.save(uniqueItems().models) { _ in }
+        sut.save(uniqueImageFeed().models) { _ in }
         
         XCTAssertEqual(store.receivedMessage, [.deleteCachedFeed])
     }
@@ -28,7 +28,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         let (sut, store) = makeSUT()
         let deletionError = anyNSError()
         
-        sut.save(uniqueItems().models) { _ in }
+        sut.save(uniqueImageFeed().models) { _ in }
         store.completeDeletion(with: deletionError)
         
         XCTAssertEqual(store.receivedMessage, [.deleteCachedFeed])
@@ -37,11 +37,11 @@ final class CacheFeedUseCaseTests: XCTestCase {
     func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
         let timeStamp = Date()
         let (sut, store) = makeSUT { timeStamp }
-        let items = uniqueItems()
-        sut.save(items.models) { _ in }
+        let feed = uniqueImageFeed()
+        sut.save(feed.models) { _ in }
         store.completeDeletSuccessfully()
         
-        XCTAssertEqual(store.receivedMessage, [.deleteCachedFeed, .insert(feed: items.local, timeStamp: timeStamp)])
+        XCTAssertEqual(store.receivedMessage, [.deleteCachedFeed, .insert(feed: feed.local, timeStamp: timeStamp)])
     }
     
     func test_save_failsOnDeletionError() {
@@ -77,7 +77,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         sut = LocalFeedLoader(store: store, currentDate: Date.init)
         
         var receivedResult = [LocalFeedLoader.SaveResult]()
-        sut?.save(uniqueItems().models) { result in
+        sut?.save(uniqueImageFeed().models) { result in
             receivedResult.append(result)
         }
         
@@ -93,7 +93,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         sut = LocalFeedLoader(store: store, currentDate: Date.init)
         
         var receivedResult = [LocalFeedLoader.SaveResult]()
-        sut?.save(uniqueItems().models) { result in
+        sut?.save(uniqueImageFeed().models) { result in
             receivedResult.append(result)
         }
         
@@ -118,7 +118,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         let exp = expectation(description: "Wait for completion")
         
         var receivedError: Error?
-        sut.save(uniqueItems().models) { error in
+        sut.save(uniqueImageFeed().models) { error in
             receivedError = error
             exp.fulfill()
         }
@@ -137,7 +137,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         
         enum ReceivedMessage: Equatable {
             case deleteCachedFeed
-            case insert(feed: [LocalFeedItem], timeStamp: Date)
+            case insert(feed: [LocalFeedImage], timeStamp: Date)
         }
         
         var receivedMessage = [ReceivedMessage]()
@@ -147,9 +147,9 @@ final class CacheFeedUseCaseTests: XCTestCase {
             receivedMessage.append(.deleteCachedFeed)
         }
         
-        func insert(_ items: [LocalFeedItem], timeStamp: Date, completion: @escaping InsertionCompletion) {
+        func insert(_ feed: [LocalFeedImage], timeStamp: Date, completion: @escaping InsertionCompletion) {
             insertionCompletions.append(completion)
-            receivedMessage.append(.insert(feed: items, timeStamp: timeStamp))
+            receivedMessage.append(.insert(feed: feed, timeStamp: timeStamp))
         }
         
         func completeDeletion(with error: Error, at index: Int = 0) {
@@ -170,14 +170,14 @@ final class CacheFeedUseCaseTests: XCTestCase {
         
     }
     
-    private func uniqueItem() -> FeedItem {
-        return FeedItem(id: UUID(), description: "any", location: "any", imageURL: anyURL())
+    private func uniqueItem() -> FeedImage {
+        return FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())
     }
     
-    private func uniqueItems() -> (models:[FeedItem], local: [LocalFeedItem]) {
+    private func uniqueImageFeed() -> (models:[FeedImage], local: [LocalFeedImage]) {
         let items = [uniqueItem(), uniqueItem()]
         let localItems = items.map {
-            LocalFeedItem(id: $0.id, description: $0.description, location: $0.location, imageURL: $0.imageURL)
+            LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.url)
         }
         return (items, localItems)
     }

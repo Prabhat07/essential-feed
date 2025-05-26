@@ -128,11 +128,11 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         .failure(error)
     }
     
-    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (modle: FeedItem, json: [String: Any]) {
-        let item = FeedItem(id: id,
+    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (modle: FeedImage, json: [String: Any]) {
+        let item = FeedImage(id: id,
                             description: description,
                             location: location,
-                            imageURL: imageURL)
+                            url: imageURL)
         let json = ["id": id.uuidString,
                     "description": description,
                     "location": location,
