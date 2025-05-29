@@ -19,38 +19,6 @@ public final class LocalFeedLoader {
         self.currentDate = currentDate
     }
     
-    public func load(completion: @escaping (LoadResult) -> Void) {
-        store.retrieve { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .failure(error):
-                completion(.failure(error))
-                
-            case let .found(images, timestamp) where self.validate(timestamp):
-                completion(.success(images.toModels()))
-                
-            case .found, .empty:
-                completion(.success([]))
-                
-            }
-        }
-    }
-    
-    public func validateCache() {
-        store.retrieve { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .failure:
-                self.store.deleteCachedFeed { _ in }
-                
-            case let .found(_, timestamp) where !validate(timestamp):
-                self.store.deleteCachedFeed { _ in }
-                
-            case .found, .empty: break
-            }
-        }
-    }
-    
     private var maxCacheAgeInDays: Int {
         return 7
     }
@@ -61,6 +29,10 @@ public final class LocalFeedLoader {
         }
         return currentDate() < maxAge
     }
+    
+}
+
+extension LocalFeedLoader {
     
     public func save(_ feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
         store.deleteCachedFeed { [weak self] error in
@@ -79,6 +51,47 @@ public final class LocalFeedLoader {
             completion(error)
         }
     }
+    
+}
+
+extension LocalFeedLoader {
+    
+    public func load(completion: @escaping (LoadResult) -> Void) {
+        store.retrieve { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .failure(error):
+                completion(.failure(error))
+                
+            case let .found(images, timestamp) where self.validate(timestamp):
+                completion(.success(images.toModels()))
+                
+            case .found, .empty:
+                completion(.success([]))
+                
+            }
+        }
+    }
+    
+}
+
+extension LocalFeedLoader {
+    
+    public func validateCache() {
+        store.retrieve { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .failure:
+                self.store.deleteCachedFeed { _ in }
+                
+            case let .found(_, timestamp) where !validate(timestamp):
+                self.store.deleteCachedFeed { _ in }
+                
+            case .found, .empty: break
+            }
+        }
+    }
+    
 }
 
 private extension Array where Element == FeedImage {
