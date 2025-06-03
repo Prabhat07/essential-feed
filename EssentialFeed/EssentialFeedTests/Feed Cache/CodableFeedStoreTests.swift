@@ -73,6 +73,14 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieveTwice: .failure(anyNSError()))
     }
     
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        let sut = makeSut()
+        
+        let insertionError = insert((uniqueImageFeed().local, Date()), to: sut)
+        
+        XCTAssertNil(insertionError, "Expected to override cache successfully")
+    }
+    
     func test_insert_deliversNoErrorOnNonEmptyCache() {
         let sut = makeSut()
         insert((uniqueImageFeed().local, Date()), to: sut)
@@ -169,32 +177,31 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_storeSideEffects_runSerially() {
-            let sut = makeSut()
-            var completedOperationsInOrder = [XCTestExpectation]()
-
-            let op1 = expectation(description: "Operation 1")
-            sut.insert(uniqueImageFeed().local, timestamp: Date()) { _ in
-                completedOperationsInOrder.append(op1)
-                op1.fulfill()
-            }
-
-            let op2 = expectation(description: "Operation 2")
-            sut.deleteCachedFeed { _ in
-                completedOperationsInOrder.append(op2)
-                op2.fulfill()
-            }
-
-            let op3 = expectation(description: "Operation 3")
-            sut.insert(uniqueImageFeed().local, timestamp: Date()) { _ in
-                completedOperationsInOrder.append(op3)
-                op3.fulfill()
-            }
-
-            waitForExpectations(timeout: 5.0)
-
-            XCTAssertEqual(completedOperationsInOrder, [op1, op2, op3], "Expected side-effects to run serially but operations finished in the wrong order")
+        let sut = makeSut()
+        var completedOperationsInOrder = [XCTestExpectation]()
+        
+        let op1 = expectation(description: "Operation 1")
+        sut.insert(uniqueImageFeed().local, timestamp: Date()) { _ in
+            completedOperationsInOrder.append(op1)
+            op1.fulfill()
         }
-
+        
+        let op2 = expectation(description: "Operation 2")
+        sut.deleteCachedFeed { _ in
+            completedOperationsInOrder.append(op2)
+            op2.fulfill()
+        }
+        
+        let op3 = expectation(description: "Operation 3")
+        sut.insert(uniqueImageFeed().local, timestamp: Date()) { _ in
+            completedOperationsInOrder.append(op3)
+            op3.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5.0)
+        
+        XCTAssertEqual(completedOperationsInOrder, [op1, op2, op3], "Expected side-effects to run serially but operations finished in the wrong order")
+    }
     
     //MARK: - Helpers
     
