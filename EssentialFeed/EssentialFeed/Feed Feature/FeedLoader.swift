@@ -10,6 +10,9 @@ public enum LoadFeedResult {
 }
 
 public protocol FeedLoader {
+    
+    /// The completion handler can be invoked in any thread.
+    /// Clients are responsible to dispatch to appropriate threads, if needed.
 	func load(completion: @escaping (LoadFeedResult) -> Void)
 }
 
