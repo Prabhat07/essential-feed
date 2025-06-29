@@ -14,21 +14,48 @@ struct FeedImageViewModel {
 }
 
 class FeedViewController: UITableViewController {
-
-    private let feed = FeedImageViewModel.prototypeFeed
+    
+    private var feed = [FeedImageViewModel]()
+    
+    private var viewIsAppeared:((FeedViewController) -> Void)?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = "My Feed"
+        viewIsAppeared = { vc in
+            vc.refresh()
+            vc.viewIsAppeared = nil
+        }
+        tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: false)
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        viewIsAppeared?(self)
+    }
+    
+    @IBAction func refresh() {
+        refreshControl?.beginRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            if self.feed.isEmpty {
+                self.feed = FeedImageViewModel.prototypeFeed
+                self.tableView.reloadData()
+            }
+            self.refreshControl?.endRefreshing()
+        }
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return feed.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedImageCell", for: indexPath) as! FeedImageCell
         let model = feed[indexPath.row]
         cell.configure(with: model)
         return cell
     }
-
+    
 }
 
 extension FeedImageCell {
