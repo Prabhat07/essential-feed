@@ -357,7 +357,9 @@ private extension FeedViewController {
                 fake.addTarget(target, action: Selector($0), for: .valueChanged)
             }
         }
+    
         refreshControl = fake
+        refreshController?.view = fake
     }
     
     func simulateUserInitiatedFeedReload() {
