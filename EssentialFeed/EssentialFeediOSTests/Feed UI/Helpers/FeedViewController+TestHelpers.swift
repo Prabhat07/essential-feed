@@ -81,3 +81,17 @@ extension FeedViewController {
         return 0
     }
 }
+
+private class FakeUIRefreshControl: UIRefreshControl {
+    var _isRefresing: Bool = false
+    
+    override var isRefreshing: Bool { _isRefresing }
+    
+    override func beginRefreshing() {
+        _isRefresing = true
+    }
+    
+    override func endRefreshing() {
+        _isRefresing = false
+    }
+}
