@@ -22,7 +22,7 @@ public final class FeedUIComposer {
     static func adaptFeedToCellController(forwardingTo feedController: FeedViewController, loader: FeedImageDataLoader) -> (([FeedImage]) -> Void) {
         return { [weak feedController] feed in
             feedController?.tableModel = feed.map {
-                FeedImageCellController(model: $0, imageLoader: loader)
+                FeedImageCellController(viewModel: FeedImageViewModel(model: $0, imageLoader: loader))
             }
         }
     }
