@@ -8,7 +8,7 @@
 import Foundation
 import EssentialFeed
 
-protocol FeedViewLoading: AnyObject {
+protocol FeedViewLoading {
     func dispay(isLoading: Bool)
 }
 
@@ -20,7 +20,7 @@ final public class FeedPresenter {
         
     private let feedLoader: FeedLoader
     
-    weak var loadingView: FeedViewLoading?
+    var loadingView: FeedViewLoading?
     
     var feedView: FeedView?
     
