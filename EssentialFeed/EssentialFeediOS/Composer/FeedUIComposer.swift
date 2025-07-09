@@ -32,8 +32,8 @@ final class WeakRefVirtualProxy<T: NSObject> {
 }
 
 extension WeakRefVirtualProxy: FeedViewLoading where T: FeedViewLoading {
-    func dispay(isLoading: Bool) {
-        object?.dispay(isLoading: isLoading)
+    func display(_ viewModle: FeedLoadingViewModel) {
+        object?.display(viewModle)
     }
 }
 
@@ -46,8 +46,8 @@ final class FeedViewAdapter: FeedView {
         self.controller = controller
     }
     
-    func dispay(feed: [FeedImage]) {
-        controller?.tableModel = feed.map {
+    func display(_ viewModel: FeedViewModel) {
+        controller?.tableModel = viewModel.feed.map {
             FeedImageCellController(viewModel: FeedImageViewModel(model: $0, imageLoader: loader, imageTransformer: UIImage.init))
         }
     }
