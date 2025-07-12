@@ -7,45 +7,48 @@
 
 import UIKit
 
-final class FeedImageCellController {
-    private let viewModel: FeedImageViewModel<UIImage>
+final class FeedImageCellController: FeedImageLoad, FeedImageLoading, FeedRetryImageLoad {
+    private let presenter: FeedImagePresenter<WeakRefVirtualProxy<FeedImageCellController>, UIImage>
     
-    init(viewModel: FeedImageViewModel<UIImage>) {
-        self.viewModel = viewModel
+    init(presenter: FeedImagePresenter<WeakRefVirtualProxy<FeedImageCellController>, UIImage>) {
+        self.presenter = presenter
     }
     
+    lazy var cell = FeedImageCell()
+    
     func view() -> FeedImageCell {
-        let cell = binded(FeedImageCell())
-        viewModel.loadImageData()
+        presenter.loadImageData()
         return cell
     }
     
     func preload() {
-        viewModel.loadImageData()
+        presenter.loadImageData()
     }
     
     func cancelLoad() {
-        viewModel.cancelImageLoad()
+        presenter.cancelImageLoad()
     }
     
-    private func binded(_ cell: FeedImageCell) -> FeedImageCell {
-        cell.locationContainer.isHidden = !viewModel.hasLocation
-        cell.locationLabel.text = viewModel.location
-        cell.descriptionLabel.text = viewModel.description
-        cell.onRetry = viewModel.loadImageData
-        
-        viewModel.onImageLoad = { [weak cell] image in
-            cell?.feedImageView.image = image
-        }
-        
-        viewModel.onImageLoadingStateChange = { [weak cell] isloading in
-            cell?.feedImageContainer.isShimmering = isloading
-        }
-        
-        viewModel.onShouldRetryImageLoadStateChange = { [weak cell] shouldRetry in
-            cell?.feedImageRetryButton.isHidden = !shouldRetry
-        }
-       
-        return cell
+    func display(_ isLoading: Bool) {
+        cell.feedImageContainer.isShimmering = isLoading
+    }
+    
+    // Error
+    func displayRetry(_ shouldRetry: Bool) {
+        cell.feedImageRetryButton.isHidden = !shouldRetry
+        updateCell()
+    }
+    
+    // Success
+    func displayImage(_ image: UIImage) {
+        cell.feedImageView.image = image
+        updateCell()
+    }
+    
+    func updateCell() {
+        cell.locationContainer.isHidden = !presenter.hasLocation
+        cell.locationLabel.text = presenter.location
+        cell.descriptionLabel.text = presenter.description
+        cell.onRetry = presenter.loadImageData
     }
 }
