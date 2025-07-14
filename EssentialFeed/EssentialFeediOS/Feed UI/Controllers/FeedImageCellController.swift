@@ -7,48 +7,42 @@
 
 import UIKit
 
-final class FeedImageCellController: FeedImageLoad, FeedImageLoading, FeedRetryImageLoad {
-    private let presenter: FeedImagePresenter<WeakRefVirtualProxy<FeedImageCellController>, UIImage>
+protocol FeedImageCellControllerDelegate {
+    func didRequestImage()
+    func didCancelImageRequest()
+}
+
+final class FeedImageCellController: FeedImageView {
+   
+    private let delegate: FeedImageCellControllerDelegate
     
-    init(presenter: FeedImagePresenter<WeakRefVirtualProxy<FeedImageCellController>, UIImage>) {
-        self.presenter = presenter
+    init(delegate: FeedImageCellControllerDelegate) {
+        self.delegate = delegate
     }
     
     lazy var cell = FeedImageCell()
     
     func view() -> FeedImageCell {
-        presenter.loadImageData()
+        delegate.didRequestImage()
         return cell
     }
     
     func preload() {
-        presenter.loadImageData()
+        delegate.didRequestImage()
     }
     
     func cancelLoad() {
-        presenter.cancelImageLoad()
+        delegate.didCancelImageRequest()
     }
     
-    func display(_ isLoading: Bool) {
-        cell.feedImageContainer.isShimmering = isLoading
+    func display(_ viewModel: FeedImageViewModel<UIImage>) {
+        cell.locationContainer.isHidden = !viewModel.hasLocation
+        cell.locationLabel.text = viewModel.location
+        cell.descriptionLabel.text = viewModel.description
+        cell.feedImageView.image = viewModel.image
+        cell.feedImageContainer.isShimmering = viewModel.isLoading
+        cell.feedImageRetryButton.isHidden = !viewModel.shouldRetry
+        cell.onRetry = delegate.didRequestImage
     }
     
-    // Error
-    func displayRetry(_ shouldRetry: Bool) {
-        cell.feedImageRetryButton.isHidden = !shouldRetry
-        updateCell()
-    }
-    
-    // Success
-    func displayImage(_ image: UIImage) {
-        cell.feedImageView.image = image
-        updateCell()
-    }
-    
-    func updateCell() {
-        cell.locationContainer.isHidden = !presenter.hasLocation
-        cell.locationLabel.text = presenter.location
-        cell.descriptionLabel.text = presenter.description
-        cell.onRetry = presenter.loadImageData
-    }
 }
