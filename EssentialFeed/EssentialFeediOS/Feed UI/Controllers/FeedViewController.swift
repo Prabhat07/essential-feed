@@ -17,11 +17,6 @@ final public class FeedViewController: UITableViewController, UITableViewDataSou
     
     private var viewIsApperaing: ((FeedViewController) -> ())?
     
-    convenience init(refreshController: FeedRefreshController) {
-        self.init()
-        self.refreshController = refreshController
-    }
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
