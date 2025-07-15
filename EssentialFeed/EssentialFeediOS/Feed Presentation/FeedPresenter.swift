@@ -8,7 +8,7 @@
 import Foundation
 import EssentialFeed
 
-protocol FeedViewLoading {
+protocol FeedLoadingView {
     func display(_ viewModel: FeedLoadingViewModel)
 }
 
@@ -17,10 +17,10 @@ protocol FeedView {
 }
 
 final public class FeedPresenter {
-    private let loadingView: FeedViewLoading
+    private let loadingView: FeedLoadingView
     private let feedView: FeedView
     
-    init(loadingView: FeedViewLoading, feedView: FeedView) {
+    init(loadingView: FeedLoadingView, feedView: FeedView) {
         self.loadingView = loadingView
         self.feedView = feedView
     }
