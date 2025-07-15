@@ -125,6 +125,7 @@
                         <connections>
                             <outlet property="dataSource" destination="ig2-fP-2vu" id="v6J-4f-ITa"/>
                             <outlet property="delegate" destination="ig2-fP-2vu" id="vhs-Xj-jgY"/>
+                            <outlet property="prefetchDataSource" destination="ig2-fP-2vu" id="sEi-Cx-71F"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Mr4-uz-4c3"/>
