@@ -18,7 +18,24 @@
                         <view key="tableHeaderView" contentMode="scaleToFill" id="BhM-Zy-1g3" customClass="ErrorView" customModule="EssentialFeediOS" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nER-EE-9Gr">
+                                    <rect key="frame" x="8" y="8" width="377" height="28"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemRedColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="nER-EE-9Gr" secondAttribute="trailing" constant="8" id="4au-wD-Ab0"/>
+                                <constraint firstItem="nER-EE-9Gr" firstAttribute="leading" secondItem="BhM-Zy-1g3" secondAttribute="leading" constant="8" id="7CY-mU-dia"/>
+                                <constraint firstItem="nER-EE-9Gr" firstAttribute="top" secondItem="BhM-Zy-1g3" secondAttribute="top" constant="8" id="7Kb-Fr-cb4"/>
+                                <constraint firstAttribute="bottom" secondItem="nER-EE-9Gr" secondAttribute="bottom" constant="8" id="Gwo-gG-cAv"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="label" destination="nER-EE-9Gr" id="4bI-OR-LX2"/>
+                            </connections>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="lwJ-ml-763">
                             <rect key="frame" x="0.0" y="602" width="393" height="44"/>
@@ -160,6 +177,9 @@
         <image name="pin" width="10" height="14.333333015441895"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
