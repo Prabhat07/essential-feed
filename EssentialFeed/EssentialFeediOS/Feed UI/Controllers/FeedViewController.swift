@@ -15,7 +15,7 @@ public final class ErrorView: UIView {
     public var message: String?
 }
 
-final public class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView {
+final public class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
     
     public let errorView = ErrorView()
     
@@ -48,6 +48,10 @@ final public class FeedViewController: UITableViewController, UITableViewDataSou
         } else {
             refreshControl?.endRefreshing()
         }
+    }
+    
+    func display(_ viewModle: FeedErrorViewModel) {
+        errorView.message = viewModle.message
     }
     
     override public func viewIsAppearing(_ animated: Bool) {
