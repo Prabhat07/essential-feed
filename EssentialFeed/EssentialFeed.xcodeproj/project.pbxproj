@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 74;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,6 +29,8 @@
 		43619FC92DD66D1500DE5B8D /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43619FB72DCF2C5700DE5B8D /* XCTestCase+MemoryLeakTracking.swift */; };
 		437773EB2DE5654300C05D86 /* FeedStoreSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437773EA2DE5654300C05D86 /* FeedStoreSpy.swift */; };
 		437B45E82DFEBAC100A28B72 /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 437B45DD2DFEBAC000A28B72 /* EssentialFeediOS.framework */; };
+		43ABDC952E2A250D0049ACDB /* FeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABDC942E2A250D0049ACDB /* FeedPresenter.swift */; };
+		43ABDC962E2A25E00049ACDB /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43ABDC8E2E2A1F8B0049ACDB /* Feed.strings */; };
 		43AE88532DCAFA5700090B14 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE88522DCAFA4400090B14 /* HTTPClient.swift */; };
 		43AE88572DCAFC5000090B14 /* FeedItemsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE88562DCAFC5000090B14 /* FeedItemsMapper.swift */; };
 		43AE885A2DCC6FC900090B14 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE88592DCC6FC900090B14 /* URLSessionHTTPClientTests.swift */; };
@@ -127,6 +129,10 @@
 		437B45DD2DFEBAC000A28B72 /* EssentialFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		437B45E72DFEBAC100A28B72 /* EssentialFeediOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeediOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A45DCB2E0040930086E39C /* CI_iOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CI_iOS.xctestplan; sourceTree = "<group>"; };
+		43ABDC8F2E2A1F8B0049ACDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
+		43ABDC912E2A1F930049ACDB /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Feed.strings; sourceTree = "<group>"; };
+		43ABDC922E2A1F950049ACDB /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Feed.strings"; sourceTree = "<group>"; };
+		43ABDC942E2A250D0049ACDB /* FeedPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPresenter.swift; sourceTree = "<group>"; };
 		43AE88522DCAFA4400090B14 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		43AE88562DCAFC5000090B14 /* FeedItemsMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsMapper.swift; sourceTree = "<group>"; };
 		43AE88592DCC6FC900090B14 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
@@ -153,7 +159,6 @@
 		4384F9302E29670100A9106E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				/Localized/Feed.strings,
 				FeedPresenterTests.swift,
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
@@ -256,6 +261,7 @@
 				43F57C562DE319B200789CC7 /* Feed Cache */,
 				080EDF1021B6DFA200813479 /* Feed Feature */,
 				431F6B6D2DC3DF6300142A0A /* Feed API */,
+				43ABDC932E2A24EA0049ACDB /* Feed Presentation */,
 			);
 			path = EssentialFeed;
 			sourceTree = "<group>";
@@ -349,6 +355,15 @@
 				43C4F40D2DE816AD0084042A /* FeedCacheTestHelpers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		43ABDC932E2A24EA0049ACDB /* Feed Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				43ABDC8E2E2A1F8B0049ACDB /* Feed.strings */,
+				43ABDC942E2A250D0049ACDB /* FeedPresenter.swift */,
+			);
+			path = "Feed Presentation";
 			sourceTree = "<group>";
 		};
 		43AE88582DCB089900090B14 /* Feed API */ = {
@@ -569,6 +584,7 @@
 				};
 			};
 			buildConfigurationList = 080EDEEB21B6DA7E00813479 /* Build configuration list for PBXProject "EssentialFeed" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -578,7 +594,6 @@
 				el,
 			);
 			mainGroup = 080EDEE721B6DA7E00813479;
-			preferredProjectObjectVersion = 55;
 			productRefGroup = 080EDEF221B6DA7E00813479 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -598,6 +613,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43ABDC962E2A25E00049ACDB /* Feed.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +671,7 @@
 				43F57C582DE319D400789CC7 /* LocalFeedLoader.swift in Sources */,
 				43AE88532DCAFA5700090B14 /* HTTPClient.swift in Sources */,
 				080EDF0C21B6DAE800813479 /* FeedImage.swift in Sources */,
+				43ABDC952E2A250D0049ACDB /* FeedPresenter.swift in Sources */,
 				43619FBA2DD233D300DE5B8D /* URLSessionHTTPClient.swift in Sources */,
 				433AF14D2DF5966900F06215 /* ManagedCache.swift in Sources */,
 				43BCC8052DF35AD80059AB3D /* CoreDataFeedStore.swift in Sources */,
@@ -748,6 +765,19 @@
 			targetProxy = 437B45E92DFEBAC100A28B72 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		43ABDC8E2E2A1F8B0049ACDB /* Feed.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43ABDC8F2E2A1F8B0049ACDB /* en */,
+				43ABDC912E2A1F930049ACDB /* el */,
+				43ABDC922E2A1F950049ACDB /* pt-BR */,
+			);
+			name = Feed.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		080EDF0321B6DA7E00813479 /* Debug */ = {
