@@ -91,11 +91,10 @@ final class FeedImagePresenterTests: XCTestCase {
     
     func test_didFinishLoadingImageData_displaysRetryOnFailedImageTransformation() {
         let image = uniqueItem()
-        let data = Data()
         
         let (sut, view) = makeSUT(imageTransformer: fail)
         
-        sut.didFinishDataLoading(with: data, for: image)
+        sut.didFinishDataLoading(with: Data(), for: image)
         
         let message = view.messages.first
         XCTAssertEqual(view.messages.count, 1)
@@ -109,11 +108,10 @@ final class FeedImagePresenterTests: XCTestCase {
     func test_didFinishLoadingImageData_displaysImageOnSuccessfulTransformation() {
         let transformed = AnyImage()
         let image = uniqueItem()
-        let data = Data()
         
         let (sut, view) = makeSUT { _ in transformed }
         
-        sut.didFinishDataLoading(with: data, for: image)
+        sut.didFinishDataLoading(with: Data(), for: image)
         
         let message = view.messages.first
         XCTAssertEqual(view.messages.count, 1)
