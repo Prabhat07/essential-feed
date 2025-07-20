@@ -30,7 +30,7 @@ public class FeedImagePresenter<View: FeedImageView, Image> where View.Image == 
             shouldRetry: false))
     }
     
-    public func didFinishDataLoading(with data: Data, for model: FeedImage) {
+    public func didFinishLoadingImageData(with data: Data, for model: FeedImage) {
         let image = imageTransformer(data)
         view.display(FeedImageViewModel(
             description: model.description,
