@@ -50,9 +50,10 @@ class FeedImagePresenter<View: FeedImageView, Image> where View.Image == Image {
             description: model.description,
             location: model.location,
             image: image,
-            isLoading: true,
+            isLoading: false,
             shouldRetry: image ==  nil))
     }
+    
 }
 
 final class FeedImagePresenterTests: XCTestCase {
@@ -91,7 +92,7 @@ final class FeedImagePresenterTests: XCTestCase {
         XCTAssertEqual(view.messages.count, 1)
         XCTAssertEqual(message?.description, image.description)
         XCTAssertEqual(message?.location, image.location)
-        XCTAssertEqual(message?.isLoading, true)
+        XCTAssertEqual(message?.isLoading, false)
         XCTAssertEqual(message?.shouldRetry, true)
         XCTAssertNil(message?.image)
     }
@@ -109,7 +110,7 @@ final class FeedImagePresenterTests: XCTestCase {
         XCTAssertEqual(view.messages.count, 1)
         XCTAssertEqual(message?.description, image.description)
         XCTAssertEqual(message?.location, image.location)
-        XCTAssertEqual(message?.isLoading, true)
+        XCTAssertEqual(message?.isLoading, false)
         XCTAssertEqual(message?.shouldRetry, false)
         XCTAssertEqual(message?.image, transformed)
     }
