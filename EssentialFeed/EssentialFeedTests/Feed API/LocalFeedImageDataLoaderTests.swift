@@ -32,8 +32,8 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
         store.retrieve(dataForURL: url) { result in
             completion(result
-                            .mapError { _ in Error.failed }
-                            .flatMap { _ in .failure(Error.notfound) })
+                .mapError { _ in Error.failed }
+                .flatMap { data in data.map { .success($0) } ?? .failure(Error.notfound) })
         }
         return Task()
     }
@@ -73,7 +73,14 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
         expect(sut, toCompleteWith: failed(.notfound), when: {
             store.complete(with: .none)
         })
-        
+    }
+    
+    func test_loadImageDataFromURL_deliversDataFound() {
+        let (sut, store) = makeSUT()
+        let foundData = anyData()
+        expect(sut, toCompleteWith: .success(foundData), when: {
+            store.complete(with: foundData)
+        })
     }
     
     // MARK: - Helpers
