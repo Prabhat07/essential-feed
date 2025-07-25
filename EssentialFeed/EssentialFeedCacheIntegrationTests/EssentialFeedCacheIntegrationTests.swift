@@ -118,13 +118,13 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     }
     
     private func makeImageLoader(file: StaticString = #file, line: UInt = #line) -> LocalFeedImageDataLoader {
-            let storeURL = testSpecificStoreURL()
-            let store = try! CoreDataFeedStore(storeURL: storeURL)
-            let sut = LocalFeedImageDataLoader(store: store)
-            trackForMemoryLeaks(store, file: file, line: line)
-            trackForMemoryLeaks(sut, file: file, line: line)
-            return sut
-        }
+        let storeURL = testSpecificStoreURL()
+        let store = try! CoreDataFeedStore(storeURL: storeURL)
+        let sut = LocalFeedImageDataLoader(store: store)
+        trackForMemoryLeaks(store, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
+    }
     
     private func save(_ feed: [FeedImage], with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
         let saveExp = expectation(description: "Wait for save completion")
