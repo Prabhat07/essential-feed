@@ -20,14 +20,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        let url = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
-        let session = URLSession(configuration: .ephemeral)
-        let client = URLSessionHTTPClient(session: session)
-        let feedLoader = RemoteFeedLoader(url: url, client: client)
-        let imagLoader = RemoteFeedImageDataLoader(client: client)
-        let feedController = FeedUIComposer.feedComposedWith(feedLoader: feedLoader, imageLoader: imagLoader)
-        window?.rootViewController = feedController
-        window?.makeKeyAndVisible()
+        let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
+        let remoteClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+        let remoteFeedLoader = RemoteFeedLoader(url: remoteURL, client: remoteClient)
+        let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
+        
+        window?.rootViewController = FeedUIComposer.feedComposedWith(
+            feedLoader: remoteFeedLoader,
+            imageLoader: remoteImageLoader)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
