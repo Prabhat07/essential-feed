@@ -217,14 +217,28 @@
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
 		};
+		43F4329A2E5C9D2600C1BDAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FeedSnapshotTests.swift,
+			);
+			target = 437B45DC2DFEBAC000A28B72 /* EssentialFeediOS */;
+		};
+		43F4329B2E5C9D2600C1BDAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FeedSnapshotTests.swift,
+			);
+			target = 437B45E62DFEBAC100A28B72 /* EssentialFeediOSTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		433AF17E2DF5FF3E00F06215 /* EssentialFeedCacheIntegrationTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeedCacheIntegrationTests; sourceTree = "<group>"; };
 		43619FC02DD23FE600DE5B8D /* EssentialFeedAPIEndToEndTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeedAPIEndToEndTests; sourceTree = "<group>"; };
 		437B45DE2DFEBAC000A28B72 /* EssentialFeediOS */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeediOS; sourceTree = "<group>"; };
-		437B45EB2DFEBAC100A28B72 /* EssentialFeediOSTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeediOSTests; sourceTree = "<group>"; };
 		4384F92D2E2966CA00A9106E /* Feed Presenter */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4384F9302E29670100A9106E /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Feed Presenter"; sourceTree = "<group>"; };
+		43F432982E5C9D2600C1BDAB /* EssentialFeediOSTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (43F4329A2E5C9D2600C1BDAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 43F4329B2E5C9D2600C1BDAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EssentialFeediOSTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,7 +303,7 @@
 				43619FC02DD23FE600DE5B8D /* EssentialFeedAPIEndToEndTests */,
 				433AF17E2DF5FF3E00F06215 /* EssentialFeedCacheIntegrationTests */,
 				437B45DE2DFEBAC000A28B72 /* EssentialFeediOS */,
-				437B45EB2DFEBAC100A28B72 /* EssentialFeediOSTests */,
+				43F432982E5C9D2600C1BDAB /* EssentialFeediOSTests */,
 				43194E012E139E34003D6201 /* Frameworks */,
 				080EDEF221B6DA7E00813479 /* Products */,
 			);
@@ -601,6 +615,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				437B45DE2DFEBAC000A28B72 /* EssentialFeediOS */,
+				43F432982E5C9D2600C1BDAB /* EssentialFeediOSTests */,
 			);
 			name = EssentialFeediOS;
 			packageProductDependencies = (
@@ -621,9 +636,6 @@
 			);
 			dependencies = (
 				437B45EA2DFEBAC100A28B72 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				437B45EB2DFEBAC100A28B72 /* EssentialFeediOSTests */,
 			);
 			name = EssentialFeediOSTests;
 			packageProductDependencies = (
