@@ -228,6 +228,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				FeedSnapshotTests.swift,
+				"Helpers/UIViewController+Snapshot.swift",
 			);
 			target = 437B45E62DFEBAC100A28B72 /* EssentialFeediOSTests */;
 		};
