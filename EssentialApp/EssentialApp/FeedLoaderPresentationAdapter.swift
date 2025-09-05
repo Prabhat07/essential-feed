@@ -7,25 +7,32 @@
 
 import EssentialFeed
 import EssentialFeediOS
+import Combine
 
 final class FeedLoaderPresentationAdapter: FeedViewControllerDelegate {
-    let feedLoader: FeedLoader
+    let feedLoader: () -> FeedLoader.Publisher
     var presenter: FeedPresenter?
+    private var cancellable: Cancellable?
     
-    init(feedLoader: FeedLoader) {
+    init(feedLoader:@escaping () -> FeedLoader.Publisher) {
         self.feedLoader = feedLoader
     }
     
     func didRequestFeedRefresh() {
         presenter?.didStartLoadingFeed()
-        feedLoader.load { [weak self] result in
-            switch result {
-            case .success(let feed):
+        
+        cancellable = feedLoader().sink(
+            receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished: break
+                    
+                case let .failure(error):
+                    self?.presenter?.didFinishLoadingFeed(with: error)
+                }
+            }, receiveValue: { [weak self] feed in
                 self?.presenter?.didFinishLoadingFeed(with: feed)
-            case .failure(let error):
-                self?.presenter?.didFinishLoadingFeed(with: error)
-            }
-        }
+            })
+        
     }
     
 }
