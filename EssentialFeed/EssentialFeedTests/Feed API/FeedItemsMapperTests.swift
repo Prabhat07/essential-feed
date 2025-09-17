@@ -9,12 +9,12 @@ import XCTest
 import EssentialFeed
 
 class FeedItemsMapperTests: XCTestCase {
-
+    
     func test_map_throwsErrorOnNon200HTTPResponse() throws {
         let data = makeItemJSON([])
         
         let samples = [199, 201, 300, 400, 500]
-            
+        
         try samples.forEach { code in
             XCTAssertThrowsError (
                 try FeedItemsMapper.map(data, from: HTTPURLResponse(statusCode: code))
@@ -62,9 +62,9 @@ class FeedItemsMapperTests: XCTestCase {
     
     private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedImage, json: [String: Any]) {
         let item = FeedImage(id: id,
-                            description: description,
-                            location: location,
-                            url: imageURL)
+                             description: description,
+                             location: location,
+                             url: imageURL)
         let json = ["id": id.uuidString,
                     "description": description,
                     "location": location,
@@ -73,15 +73,4 @@ class FeedItemsMapperTests: XCTestCase {
         return (item, json)
     }
     
-    private func makeItemJSON(_ items:[[String: Any]]) -> Data {
-        let json = ["items": items]
-        return try! JSONSerialization.data(withJSONObject: json)
-    }
-    
-}
-
-private extension HTTPURLResponse {
-    convenience init(statusCode: Int) {
-        self.init(url: anyURL(), statusCode: statusCode, httpVersion: nil, headerFields: nil)!
-    }
 }
