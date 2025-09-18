@@ -83,7 +83,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-    private func makeRemoteFeedLoaderWithFallBack() -> FeedLoader.Publisher {
+    private func makeRemoteFeedLoaderWithFallBack() -> AnyPublisher<[FeedImage], Error> {
         let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
        return httpClient
             .getPublisher(url: remoteURL)
