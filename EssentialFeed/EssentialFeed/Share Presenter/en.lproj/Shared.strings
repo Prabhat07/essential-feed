@@ -1,0 +1,9 @@
+/* 
+  Shared.strings
+  EssentialFeed
+
+  Created by Prabhat Tiwari on 21/09/25.
+  
+*/
+
+"GENERIC_CONNECTION_ERROR" = "Couldn't connect to server";

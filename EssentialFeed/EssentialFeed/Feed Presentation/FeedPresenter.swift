@@ -25,7 +25,7 @@ final public class FeedPresenter {
     private let feedView: FeedView
     
     private var feedLoadError: String {
-        NSLocalizedString("GENERIC_CONNECTION_ERROR", tableName: "Feed", bundle: Bundle(for: FeedPresenter.self), comment: "Feed error view message")
+        NSLocalizedString("GENERIC_CONNECTION_ERROR", tableName: "Shared", bundle: Bundle(for: FeedPresenter.self), comment: "Feed error view message")
         
     }
     

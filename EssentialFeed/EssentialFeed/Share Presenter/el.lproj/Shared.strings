@@ -1,0 +1,10 @@
+/* 
+  Shared.strings
+  EssentialFeed
+
+  Created by Prabhat Tiwari on 21/09/25.
+  
+*/
+
+"GENERIC_CONNECTION_ERROR" = "Δεν ήταν δυνατή η σύνδεση στο διακομιστή";
+
