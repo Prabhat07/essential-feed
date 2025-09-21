@@ -15,17 +15,20 @@ public protocol ResourceView {
 final public class LoadResourcePresenter<Resource, View: ResourceView> {
     public typealias Mapper = (Resource) -> View.ResourceViewModel
     
-    private let errorView: FeedErrorView
+    private let errorView: ResourceErrorView
     private let loadingView: ResourceLoadingView
     private let resoureView: View
     private let mapper: Mapper
     
     public static var loadError: String {
-        NSLocalizedString("GENERIC_CONNECTION_ERROR", tableName: "Shared", bundle: Bundle(for: Self.self), comment: "Feed error view message")
+        NSLocalizedString("GENERIC_CONNECTION_ERROR",
+           tableName: "Shared",
+           bundle: Bundle(for: Self.self),
+           comment: "Error message displayed when we can't load the resource from the server")
         
     }
     
-    public init(resourceView: View, loadingView: ResourceLoadingView, errorView: FeedErrorView, mapper: @escaping Mapper) {
+    public init(resourceView: View, loadingView: ResourceLoadingView, errorView: ResourceErrorView, mapper: @escaping Mapper) {
         self.resoureView = resourceView
         self.loadingView = loadingView
         self.errorView = errorView
@@ -42,7 +45,7 @@ final public class LoadResourcePresenter<Resource, View: ResourceView> {
         loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }
     
-    public func didFinishLoadingFeed(with error: Error) {
+    public func didFinishLoading(with error: Error) {
         errorView.display(.error(message: Self.loadError))
         loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }
