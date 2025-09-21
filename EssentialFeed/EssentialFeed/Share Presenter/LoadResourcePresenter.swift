@@ -21,7 +21,7 @@ final public class LoadResourcePresenter<Resource, View: ResourceView> {
     private let mapper: Mapper
     
     private var feedLoadError: String {
-        NSLocalizedString("FEED_VIEW_CONNECTION_ERROR", tableName: "Feed", bundle: Bundle(for: FeedPresenter.self), comment: "Feed error view message")
+        NSLocalizedString("GENERIC_CONNECTION_ERROR", tableName: "Feed", bundle: Bundle(for: FeedPresenter.self), comment: "Feed error view message")
         
     }
     
