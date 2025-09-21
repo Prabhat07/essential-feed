@@ -38,7 +38,7 @@ final class LoadResourcePresenterTests: XCTestCase {
     func test_didFinishLoadingWithError_displaysLocalizedErrorMessageAndStopsLoading() {
         let (sut, view) = makeSUT()
         
-        sut.didFinishLoadingFeed(with: anyNSError())
+        sut.didFinishLoading(with: anyNSError())
         
         XCTAssertEqual(view.messages, [.display(errorMessage: localized("GENERIC_CONNECTION_ERROR")), .display(isLoading: false)])
     }
@@ -68,7 +68,7 @@ final class LoadResourcePresenterTests: XCTestCase {
         return value
     }
     
-    class ViewSpy: ResourceView, ResourceLoadingView, FeedErrorView {
+    class ViewSpy: ResourceView, ResourceLoadingView, ResourceErrorView {
         
         typealias ResourceViewModel = String
         
@@ -80,7 +80,7 @@ final class LoadResourcePresenterTests: XCTestCase {
         
         var messages = Set<Message>()
         
-        func display(_ viewModel: FeedErrorViewModel) {
+        func display(_ viewModel: ResourceErrorViewModel) {
             messages.insert(.display(errorMessage: viewModel.message))
         }
         
