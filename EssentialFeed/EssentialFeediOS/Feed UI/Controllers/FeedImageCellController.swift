@@ -13,15 +13,15 @@ public protocol FeedImageCellControllerDelegate {
     func didCancelImageRequest()
 }
 
-public final class FeedImageCellController: FeedImageView, ResourceView, ResourceLoadingView, ResourceErrorView {
+public final class FeedImageCellController: ResourceView, ResourceLoadingView, ResourceErrorView {
     
    
     public typealias ResourceViewModel = UIImage
     
-    private let model: FeedImageViewModel<UIImage>
+    private let model: FeedImageViewModel
     private let delegate: FeedImageCellControllerDelegate
     
-    public init(model: FeedImageViewModel<UIImage>, delegate: FeedImageCellControllerDelegate) {
+    public init(model: FeedImageViewModel, delegate: FeedImageCellControllerDelegate) {
         self.model = model
         self.delegate = delegate
     }
@@ -45,10 +45,6 @@ public final class FeedImageCellController: FeedImageView, ResourceView, Resourc
     func cancelLoad() {
         releaseCellForReuse()
         delegate.didCancelImageRequest()
-    }
-    
-   public func display(_ viewModel: FeedImageViewModel<UIImage>) {
-    
     }
     
     public func display(_ viewModel: UIImage) {
