@@ -6,34 +6,55 @@
 //
 
 import XCTest
+import EssentialFeediOS
+@testable import EssentialFeed
 
 final class ImageCommnetsSnapshotsTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    func test_listWithContent() {
+        let sut = makeSUT()
+        
+        sut.display(comments())
+        
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "IMAGE_COMMENTS_light")
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "IMAGE_COMMENTS_dark")
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    // MARK: - Helpers
+    
+    private func makeSUT() -> ListViewController {
+        let bundle = Bundle(for: ListViewController.self)
+        let storyboard = UIStoryboard(name: "ImageComments", bundle: bundle)
+        let controller = storyboard.instantiateInitialViewController() as! ListViewController
+        controller.loadViewIfNeeded()
+        controller.tableView.showsVerticalScrollIndicator = false
+        controller.tableView.showsHorizontalScrollIndicator = false
+        return controller
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
+    
+    private func comments() -> [CellController] {
+            return [
+                ImageCommentCellController(
+                    model: ImageCommentViewModel(
+                        message: "The East Side Gallery is an open-air gallery in Berlin. It consists of a series of murals painted directly on a 1,316 m long remnant of the Berlin Wall, located near the centre of Berlin, on Mühlenstraße in Friedrichshain-Kreuzberg. The gallery has official status as a Denkmal, or heritage-protected landmark.",
+                        date: "1000 years ago",
+                        username: "a long long long long username"
+                    )
+                ),
+                ImageCommentCellController(
+                    model: ImageCommentViewModel(
+                        message: "East Side Gallery\nMemorial in Berlin, Germany",
+                        date: "10 days ago",
+                        username: "a username"
+                    )
+                ),
+                ImageCommentCellController(
+                    model: ImageCommentViewModel(
+                        message: "nice",
+                        date: "1 hour ago",
+                        username: "a."
+                    )
+                ),
+            ]
         }
-    }
 }
