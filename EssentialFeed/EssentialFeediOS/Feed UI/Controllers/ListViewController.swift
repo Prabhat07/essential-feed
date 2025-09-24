@@ -18,7 +18,7 @@ public protocol CellController {
     func cancelLoad()
 }
 
-final public class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
+final public class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
     
     @IBOutlet private(set) public var errorView: ErrorView?
     
@@ -32,7 +32,7 @@ final public class FeedViewController: UITableViewController, UITableViewDataSou
         }
     }
     
-    private var viewIsApperaing: ((FeedViewController) -> ())?
+    private var viewIsApperaing: ((ListViewController) -> ())?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
