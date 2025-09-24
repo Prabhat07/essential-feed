@@ -21,8 +21,8 @@ public final class FeedUIComposer {
     ) -> ListViewController {
         
         let presentationAdapter = FeedPresentationAdapter(loader: { feedLoader().dispatchOnMainQueue() })
-        let feedController = makeFeedViewController(
-            delegate: presentationAdapter, title: FeedPresenter.title)
+        let feedController = makeFeedViewController(title: FeedPresenter.title)
+        feedController.onRefresh = presentationAdapter.loadResource
         
         presentationAdapter.presenter = LoadResourcePresenter<[FeedImage], FeedViewAdapter>(
             resourceView: FeedViewAdapter(controller: feedController, loader: { imageLoader($0).dispatchOnMainQueue() }),
@@ -33,12 +33,11 @@ public final class FeedUIComposer {
         return feedController
     }
     
-    private static func makeFeedViewController(delegate: FeedViewControllerDelegate, title: String) -> ListViewController {
+    private static func makeFeedViewController(title: String) -> ListViewController {
         let bundle = Bundle(for: ListViewController.self)
         let storyBoard = UIStoryboard(name: "Feed", bundle: bundle)
         let feedController = storyBoard.instantiateInitialViewController() as! ListViewController
         feedController.title = FeedPresenter.title
-        feedController.delegate = delegate
         return feedController
     }
 
