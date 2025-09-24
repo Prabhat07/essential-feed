@@ -250,7 +250,7 @@
 		43F4329A2E5C9D2600C1BDAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				FeedSnapshotTests.swift,
+				"Feed UI/FeedSnapshotTests.swift",
 				"Helpers/UIImage+TestHelpers.swift",
 				"Helpers/UIViewController+Snapshot.swift",
 				"Helpers/XCTestCase+Snapshot.swift",
@@ -260,7 +260,7 @@
 		43F4329B2E5C9D2600C1BDAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				FeedSnapshotTests.swift,
+				"Feed UI/FeedSnapshotTests.swift",
 				"Helpers/UIImage+TestHelpers.swift",
 				"Helpers/UIViewController+Snapshot.swift",
 				"Helpers/XCTestCase+Snapshot.swift",
