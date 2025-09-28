@@ -30,6 +30,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         LocalFeedLoader(store: store, currentDate: Date.init)
     }()
     
+    private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
+    
+    private lazy var navigationController = UINavigationController(
+        rootViewController: FeedUIComposer.feedComposedWith(
+            feedLoader: makeRemoteFeedLoaderWithFallBack,
+            imageLoader: makeLocalImageLoaderWithRemoteFallback,
+            selection: showComments))
+    
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
         self.httpClient = httpClient
@@ -47,13 +55,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func configureWindow() {
-        window?.rootViewController = UINavigationController(
-            rootViewController: FeedUIComposer.feedComposedWith(
-            feedLoader: makeRemoteFeedLoaderWithFallBack,
-            imageLoader: makeLocalImageLoaderWithRemoteFallback))
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     
+    private func showComments(for image: FeedImage) {
+        let url = baseURL.appendingPathComponent("/v1/image/\(image.id)/comments")
+        let comments = CommentsUIComposer.commentsComposedWith(commentsLoader: makeRemoteCommentsLoader(url: url))
+        navigationController.pushViewController(comments, animated: true)
+    }
+    
+    private func makeRemoteCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
+        return { [httpClient] in
+            return httpClient
+                .getPublisher(url: url)
+                .tryMap(ImageCommentsMapper.map)
+                .eraseToAnyPublisher()
+        }
+    }
+
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
