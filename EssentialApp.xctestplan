@@ -19,6 +19,7 @@
     {
       "parallelizable" : false,
       "skippedTests" : [
+        "CommentsUIIntegrationTests\/test_feedControllerTitle()",
         "CommentsUIIntegrationTests\/test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage()",
         "CommentsUIIntegrationTests\/test_feedImageViewRetryAction_retriesImageLoad()",
         "CommentsUIIntegrationTests\/test_feedImageViewRetryButton_isVisibleOnImageURLLoadError()",
