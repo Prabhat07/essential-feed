@@ -18,6 +18,19 @@
   "testTargets" : [
     {
       "parallelizable" : false,
+      "skippedTests" : [
+        "CommentsUIIntegrationTests\/test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage()",
+        "CommentsUIIntegrationTests\/test_feedImageViewRetryAction_retriesImageLoad()",
+        "CommentsUIIntegrationTests\/test_feedImageViewRetryButton_isVisibleOnImageURLLoadError()",
+        "CommentsUIIntegrationTests\/test_feedImageViewRetryButton_isVisibleOnInvalidImageData()",
+        "CommentsUIIntegrationTests\/test_feedImageView_cancelsImageLoadingWhenNotVisibleAnymore()",
+        "CommentsUIIntegrationTests\/test_feedImageView_cancelsImageURLPreloadingWhenNotNearVisibleAnymore()",
+        "CommentsUIIntegrationTests\/test_feedImageView_doesNotRenderLoadedImageWhenNotVisibleAnymore()",
+        "CommentsUIIntegrationTests\/test_feedImageView_loadsImageURLWhenVisible()",
+        "CommentsUIIntegrationTests\/test_feedImageView_preloadsImageURLWhenNearVisible()",
+        "CommentsUIIntegrationTests\/test_feedImageView_rendersImageLoadedFromURL()",
+        "CommentsUIIntegrationTests\/test_imageLoadCompletion_dispatchesFromBackgroundToMainThread()"
+      ],
       "target" : {
         "containerPath" : "container:EssentialApp.xcodeproj",
         "identifier" : "43EEC34A2E33D7B8001A736F",

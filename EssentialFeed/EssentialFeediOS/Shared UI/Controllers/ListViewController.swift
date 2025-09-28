@@ -18,7 +18,7 @@ final public class ListViewController: UITableViewController, UITableViewDataSou
         }
     }()
     
-    private var viewIsApperaing: ((ListViewController) -> ())?
+    private var onViewDidAppear: ((ListViewController) -> ())?
     
     public var onRefresh: (() -> ())?
     
@@ -26,8 +26,8 @@ final public class ListViewController: UITableViewController, UITableViewDataSou
         super.viewDidLoad()
         
         configureErrorView()
-        viewIsApperaing = { vc in
-            vc.viewIsApperaing = nil
+        onViewDidAppear = { vc in
+            vc.onViewDidAppear = nil
             vc.refresh()
         }
     }
@@ -73,10 +73,10 @@ final public class ListViewController: UITableViewController, UITableViewDataSou
         errorView.message = viewModle.message
     }
     
-    override public func viewIsAppearing(_ animated: Bool) {
-        super.viewIsAppearing(animated)
+    override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        viewIsApperaing?(self)
+        onViewDidAppear?(self)
     }
 
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
