@@ -17,15 +17,16 @@ public final class FeedUIComposer {
     
     public static func feedComposedWith(
         feedLoader: @escaping () -> AnyPublisher<[FeedImage],
-        Error>, imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher
+        Error>, imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher,
+        selection: @escaping (FeedImage) -> Void = { _ in }
     ) -> ListViewController {
         
-        let presentationAdapter = FeedPresentationAdapter(loader: { feedLoader().dispatchOnMainQueue() })
+        let presentationAdapter = FeedPresentationAdapter(loader: feedLoader)
         let feedController = makeFeedViewController(title: FeedPresenter.title)
         feedController.onRefresh = presentationAdapter.loadResource
         
         presentationAdapter.presenter = LoadResourcePresenter<[FeedImage], FeedViewAdapter>(
-            resourceView: FeedViewAdapter(controller: feedController, loader: { imageLoader($0).dispatchOnMainQueue() }),
+            resourceView: FeedViewAdapter(controller: feedController, loader: imageLoader, selection: selection),
             loadingView: WeakRefVirtualProxy(feedController),
             errorView: WeakRefVirtualProxy(feedController),
             mapper: FeedPresenter.map
