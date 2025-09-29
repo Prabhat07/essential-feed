@@ -103,13 +103,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-    private func makeRemoteFeedLoaderWithFallBack() -> AnyPublisher<[FeedImage], Error> {
+    private func makeRemoteFeedLoaderWithFallBack() -> AnyPublisher<Paginated<FeedImage>, Error> {
         let url = FeedEndpoint.get.url(baseURL: baseURL)
         return httpClient
             .getPublisher(url: url)
             .tryMap(FeedItemsMapper.map)
             .caching(in: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
+            .map {
+                Paginated(items: $0)
+            }
+            .eraseToAnyPublisher()
     }
     
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
