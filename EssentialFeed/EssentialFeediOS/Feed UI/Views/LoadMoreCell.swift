@@ -51,8 +51,8 @@ public class LoadMoreCell: UITableViewCell {
         }
     }
     
-    public var message: String {
-        get { messageLabel.text ?? "" }
+    public var message: String? {
+        get { messageLabel.text }
         set { messageLabel.text = newValue }
     }
     
