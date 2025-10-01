@@ -11,6 +11,7 @@ import EssentialFeed
 public final class LoadMoreCellController:NSObject, UITableViewDataSource, UITableViewDelegate {
     let cell = LoadMoreCell()
     private let callback: () -> Void
+    private var offsetObserver: NSKeyValueObservation?
     
     public init(callback: @escaping () -> Void) {
         self.callback = callback
@@ -31,6 +32,15 @@ public final class LoadMoreCellController:NSObject, UITableViewDataSource, UITab
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         reloadIfNeeded()
+        offsetObserver = tableView.observe(\.contentOffset, options: .new) { [weak self] (tableView, _) in
+            guard tableView.isDragging else { return }
+            
+            self?.reloadIfNeeded()
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        offsetObserver = nil
     }
     
     private func reloadIfNeeded() {
