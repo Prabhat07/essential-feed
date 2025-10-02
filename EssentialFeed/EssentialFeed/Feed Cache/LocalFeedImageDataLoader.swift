@@ -36,7 +36,7 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
     
     public enum LoadError: Swift.Error {
         case failed
-        case notfound
+        case notFound
     }
     
     private class Task: FeedImageDataLoaderTask {
@@ -46,7 +46,7 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
             self.completion = completion
         }
         
-        func completeWith(with result: FeedImageDataLoader.Result) {
+        func complete(with result: FeedImageDataLoader.Result) {
             completion?(result)
         }
         
@@ -60,15 +60,16 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
     }
     
     public func loadImageData(from url: URL, completion: @escaping (LoadResult) -> Void) -> FeedImageDataLoaderTask {
-        let task = Task(completion: completion)
-        store.retrieve(dataForURL: url) { [weak self] result in
-            guard self != nil else { return }
-            task.completeWith(with: result
+        let task = Task(completion: completion )
+        task.complete(
+            with: Swift.Result {
+                try store.retrieve(dataForURL: url)
+            }
                 .mapError { _ in LoadError.failed }
                 .flatMap { data in
-                    data.map { .success($0) } ?? .failure(LoadError.notfound)
+                    data.map { .success($0) } ?? .failure(LoadError.notFound)
                 })
-        }
+        
         return task
     }
 }
