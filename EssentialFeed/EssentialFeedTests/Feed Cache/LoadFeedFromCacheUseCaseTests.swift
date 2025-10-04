@@ -19,7 +19,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     func test_load_requestsCacheRetrieval() {
         let (sut, store) = makeSUT()
         
-        sut.load { _ in }
+        _ = try? sut.load()
         
         XCTAssertEqual(store.receivedMessage, [.retrieve])
     }
@@ -73,7 +73,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     func test_load_noSideEffectOnRetrievalError() {
         let (sut, store) = makeSUT()
         
-        sut.load { _ in }
+        _ = try? sut.load()
         store.completeRetrieval(with: anyNSError())
         
         XCTAssertEqual(store.receivedMessage, [.retrieve])
@@ -82,7 +82,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     func test_load_hasNoSideEffectsOnEmptyCache() {
         let (sut, store) = makeSUT()
         
-        sut.load { _ in }
+        _ = try? sut.load()
         store.completeRetrievalWithEmptyCache()
         
         XCTAssertEqual(store.receivedMessage, [.retrieve])
@@ -93,7 +93,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let uniqueFeed = uniqueImageFeed()
         let fixedCurrentDate = Date()
         let nonExpiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: 1)
-        sut.load { _ in }
+        _ = try? sut.load()
         store.completeRetrieval(with: uniqueFeed.local, timestamp: nonExpiredTimestamp)
         
         XCTAssertEqual(store.receivedMessage, [.retrieve])
@@ -104,7 +104,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let uniqueFeed = uniqueImageFeed()
         let fixedCurrentDate = Date()
         let expirationTimestamp = fixedCurrentDate.minusFeedCacheMaxAge()
-        sut.load { _ in }
+        _ = try? sut.load()
         store.completeRetrieval(with: uniqueFeed.local, timestamp: expirationTimestamp)
         
         XCTAssertEqual(store.receivedMessage, [.retrieve])
@@ -115,7 +115,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let uniqueFeed = uniqueImageFeed()
         let fixedCurrentDate = Date()
         let expiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: -1)
-        sut.load { _ in }
+        _ = try? sut.load()
         store.completeRetrieval(with: uniqueFeed.local, timestamp: expiredTimestamp)
         
         XCTAssertEqual(store.receivedMessage, [.retrieve])
@@ -131,24 +131,21 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         return (sut, store)
     }
     
-    private func expect(_ sut: LocalFeedLoader, toCompletewith expectedResult:LocalFeedLoader.LoadResult, when action: () -> (), file: StaticString = #file, line: UInt = #line) {
-        let exp = expectation(description: "Wait for load completion")
+    private func expect(_ sut: LocalFeedLoader, toCompletewith expectedResult: Result<[FeedImage], Error>, when action: () -> (), file: StaticString = #file, line: UInt = #line) {
         
         action()
         
-        sut.load { receivedResult in
-            switch (receivedResult, expectedResult) {
-            case let (.success(receivedImages), .success(expectedImages)):
-                XCTAssertEqual(receivedImages, expectedImages, file: file, line: line)
-            case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
-                XCTAssertEqual(receivedError, expectedError, file: file, line: line)
-            default:
-                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
-            }
-            exp.fulfill()
+        let receivedResult = Result { try sut.load() }
+        
+        switch (receivedResult, expectedResult) {
+        case let (.success(receivedImages), .success(expectedImages)):
+            XCTAssertEqual(receivedImages, expectedImages, file: file, line: line)
+        case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
+            XCTAssertEqual(receivedError, expectedError, file: file, line: line)
+        default:
+            XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
         }
         
-        wait(for: [exp], timeout: 1.0)
     }
     
 }
