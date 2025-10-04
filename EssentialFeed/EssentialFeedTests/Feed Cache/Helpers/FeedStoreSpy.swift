@@ -11,10 +11,6 @@ import EssentialFeed
 
 class FeedStoreSpy: FeedStore {
     
-    private var deletionCompletions = [DeletionCompletion]()
-    private var insertionCompletions = [InsertionCompletion]()
-    private var retrievalCompletions = [RetrievalCompletion]()
-    
     private var deletionResult: Result<Void, Error>?
     private var insertionResult: Result<Void, Error>?
     private var retrievalResult: Result<CachedFeed?, Error>?
