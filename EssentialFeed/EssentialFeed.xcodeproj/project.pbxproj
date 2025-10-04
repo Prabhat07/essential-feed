@@ -458,6 +458,8 @@
 				4394EB5B2E91727200F6F6AD /* InMemoryFeedStoreTests.swift */,
 				43C26F282E324B33001E1191 /* CoreDataFeedImageDataStoreTests.swift */,
 				4394EB592E91723C00F6F6AD /* InMemoryFeedImageDataStoreTests.swift */,
+				4394EB512E916F0C00F6F6AD /* FeedImageDataStoreSpecs.swift */,
+				4394EB532E916F3A00F6F6AD /* XCTestCase+FeedImageDataStoreSpecs.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
