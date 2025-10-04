@@ -124,6 +124,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .caching(in: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
             .map(makeFirstPage(items:))
+            .subscribe(on: scheduler)
             .eraseToAnyPublisher()
     }
     
@@ -141,8 +142,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .zip(makeRemoteFeedLoader(after: last))
             .map { (cachedItems, newItems) in
                 (cachedItems + newItems, newItems.last)
-            }.map(makePage)
+            }
+            .map(makePage)
             .caching(in: localFeedLoader)
+            .subscribe(on: scheduler)
+            .eraseToAnyPublisher()
     }
     
     private func makeFirstPage(items: [FeedImage]) -> Paginated<FeedImage> {
